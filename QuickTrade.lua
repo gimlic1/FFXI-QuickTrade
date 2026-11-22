@@ -350,6 +350,13 @@ function quicktrade(arg)
 		end
 	end
 
+	-- [2026-11-22 Fix] Fair-Play Policy: enforce < 6 yalms interaction distance (target.distance is squared yalms)
+	if not target.distance or math.sqrt(target.distance) >= 6 then
+		print('QuickTrade: Target is out of range (>= 6 yalms)')
+		loopCount = 0
+		return
+	end
+
 	for i = 1, #npcTable do
 		if target.name == npcTable[i].name then
 			idTable = npcTable[i].idTable
@@ -440,7 +447,7 @@ function quicktrade(arg)
 			end
 		end
 
-		if #arg > 1 and #arg[2] == 'loop' and performLoopsAfterAll > 0 then
+		if #arg > 1 and arg[2] == 'loop' and performLoopsAfterAll > 0 then -- [2026-11-22 Fix] Was: #arg[2] == 'loop'
 			loopCount = 0
 			return
 		end
@@ -698,7 +705,7 @@ function quicktrade(arg)
 			loopText = ''
 		end
 
-		if tradeString ~= 'tradenpc ' and not (#arg > 1 and #arg[2] == 'loop' and performLoopsAfterAll > 0) then
+		if tradeString ~= 'tradenpc ' and not (#arg > 1 and arg[2] == 'loop' and performLoopsAfterAll > 0) then -- [2026-11-22 Fix] Was: #arg[2] == 'loop'
 			if numTrades - 1 == 0 then
 				windower.add_to_chat(chatColor, 'QuickTrade: Trading Complete.' .. loopText)
 			else
